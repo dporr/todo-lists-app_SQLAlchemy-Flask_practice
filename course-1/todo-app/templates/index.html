@@ -1,5 +1,9 @@
 <html>
     <body>
+        <form method="post" action="/todo/create">
+            <input type="text" value="description">
+            <input type="submit" value="Create"/>
+        </form>
         <ul>
             {% for item in data %}
                 <li>{{ item.description }}</li>
