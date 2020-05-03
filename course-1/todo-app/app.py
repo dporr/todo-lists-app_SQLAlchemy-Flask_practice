@@ -24,13 +24,13 @@ db.create_all()
 def index():
     return render_template("index.html", data=Todo.query.all())
 
-@app.route("/todo/create")
+@app.route("/todo/create", method=["POST"])
 def create():
     description = request.form.get("description", "")
     todo = Todo(description= description)
     db.session.add(tod)
     db.session.commit()
     return redirect(url_for("index"))
-    
+
 if __name__ == '__main__':
     app.run()
