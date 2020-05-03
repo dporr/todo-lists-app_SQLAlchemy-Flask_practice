@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ user = os.getenv("POSTGRES_USER")
 password = os.getenv("POSTGRES_PASSWORD")
 host = os.getenv("POSTGRES_HOST")
 schema = os.getenv("APP_SCHEMA")
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgress://{user}:{password}@{host}:5432/{schema}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@{host}:5432/{schema}'
 db = SQLAlchemy(app)
 
 class Todo(db.Model):
