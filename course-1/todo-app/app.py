@@ -11,3 +11,6 @@ def index():
         {"description": "4th Item"}
         ]
     )
+
+if __name__ == '__main__':
+    app.run()
