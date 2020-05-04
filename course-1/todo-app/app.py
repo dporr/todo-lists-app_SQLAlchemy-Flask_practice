@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os, sys
 
 app = Flask(__name__)
@@ -12,13 +13,12 @@ host = os.getenv("POSTGRES_HOST")
 schema = os.getenv("APP_SCHEMA")
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@{host}:5432/{schema}'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key= True)
     description = db.Column(db.String, nullable= False)
-
-db.create_all()
 
 @app.route('/')
 def index():
