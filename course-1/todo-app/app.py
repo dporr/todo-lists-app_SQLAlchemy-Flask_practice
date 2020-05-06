@@ -20,7 +20,7 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key= True)
     description = db.Column(db.String, nullable= False)
     completed = db.Column(db.Boolean, nullable=False, default= False)
-
+  
 @app.route('/')
 def index():
     return render_template("index.html", data=Todo.query.all())
@@ -56,6 +56,18 @@ def set_completed(todo_id):
     finally:
         db.session.close()
     return redirect(url_for('index'))
+
+@app.route('/todos/<todo_id>', methods=['DELETE'])
+def delete_todo(todo_id):
+  try:
+    Todo.query.filter_by(id=todo_id).delete()
+    db.session.commit()
+  except:
+    db.session.rollback()
+  finally:
+    db.session.close()
+  return jsonify({ 'success': True })
+
 
 if __name__ == '__main__':
     app.run()
