@@ -20,7 +20,14 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key= True)
     description = db.Column(db.String, nullable= False)
     completed = db.Column(db.Boolean, nullable=False, default= False)
-  
+    list_id = db.Column(db.Integer, db.ForeignKey('todo_lists.id'), nullable=False)
+
+class TodoList(db.Model):
+    __tablename__= 'todo_lists'
+    id = db.Column(db.Integer, primary_key= True)
+    name = db.Column(db.String, nullable= False)
+    todos = db.relationship('todos', backref='todolist', lazy=True)
+
 @app.route('/')
 def index():
     return render_template("index.html", data=Todo.query.all())
