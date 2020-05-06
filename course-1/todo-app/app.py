@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os, sys
@@ -40,8 +40,22 @@ def create():
         db.session.rollback()
         print(sys.exc_info())
     finally:
-        db.session.close()
+        db.session.close() 
     if not error: return jsonify(body)
+
+@app.route("/todo/<todo_id>/set-completed", methods=['POST'])
+def set_completed(todo_id):
+    try:
+        completed = request.get_json()['completed']
+        print('completed', completed)
+        todo = Todo.query.get(todo_id)
+        todo.completed = completed
+        db.session.commit()
+    except:
+        db.session.rollback()
+    finally:
+        db.session.close()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()
